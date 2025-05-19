@@ -1,0 +1,63 @@
+    .homepage-container {
+    font-family: Arial, sans-serif;
+    padding: 2rem;
+    background-color: #f2f4f8;
+    min-height: 100vh;
+    }
+
+    .homepage-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    }
+
+    .homepage-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+    }
+
+    .homepage-main {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    }
+
+    .homepage-card {
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 280px;
+    text-align: center;
+    transition: transform 0.2s ease;
+    }
+
+    .homepage-card:hover {
+    transform: translateY(-5px);
+    }
+
+    .homepage-card h2 {
+    margin-bottom: 0.5rem;
+    color: #007bff;
+    }
+
+    .homepage-card p {
+    font-size: 0.95rem;
+    color: #555;
+    }
+
+    .homepage-card button {
+    margin-top: 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    }
+
+    .homepage-card button:hover {
+    background-color: #0056b3;
+    }
