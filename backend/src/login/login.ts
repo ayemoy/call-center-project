@@ -1,22 +1,18 @@
 import { db } from '../firestore/firebaseConfig';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 
-export const handleLogin = async (email: string, password: string) => {
-    const usersRef = collection(db, 'users');
-    const q = query(usersRef, where('email', '==', email));
-    const snapshot = await getDocs(q);
+export const handleLogin = async (uid: string) => {
+  // Fetch the user document by UID
+  const userRef = doc(db, "users", uid);
+  const snap = await getDoc(userRef);
 
-    if (snapshot.empty) {
-        throw new Error('User not found');
-    }
+  if (!snap.exists()) {
+    throw new Error("User not found in Firestore");
+  }
 
-    const userDoc = snapshot.docs[0];
-    const userData = userDoc.data();
+  // Strip out any sensitive fields (e.g. no password stored here)
+  const data = snap.data();
+  const { password, ...safeUser } = data;
 
-    if (userData.password !== password) {
-        throw new Error('Incorrect password');
-    }
-
-    const { password: _, ...safeUser } = userData;
-    return safeUser;
+  return safeUser; // { displayName, role, email?, … }
 };

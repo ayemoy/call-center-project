@@ -1,20 +1,27 @@
 import { Request, Response } from 'express';
 import { handleLogin } from '../login/login';
+// import * as admin from 'firebase-admin';
+import admin from '../firebaseAdmin'; // הנתיב לפי ההגדרה שלך
 
-const loginUser = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const { email, password } = req.body;
+export const loginController = async (req: Request, res: Response): Promise<void> => {
+  const { token } = req.body;
 
-        if (!email || !password) {
-        res.status(400).json({ message: 'Email and password are required' });
-        return;
-        }
+  if (!token) {
+    res.status(400).json({ message: 'Token is required' });
+    return;
+  }
 
-        const user = await handleLogin(email, password);
-        res.status(200).json({ user });
-    } catch (error: any) {
-        res.status(401).json({ message: error.message || 'Login failed' });
-    }
+  try {
+    const decoded = await admin.auth().verifyIdToken(token);
+    console.log("✅ Token decoded:", decoded);
+    const uid = decoded.uid;
+
+    const user = await handleLogin(uid);
+    console.log("✅ Firestore user:", user);
+
+    res.status(200).json({ user });
+  } catch (err: any) {
+    console.error('loginController:', err);
+    res.status(401).json({ message: err.message || 'Unauthorized' });
+  }
 };
-
-export default loginUser;
