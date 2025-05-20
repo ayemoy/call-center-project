@@ -13,11 +13,9 @@ export const loginController = async (req: Request, res: Response): Promise<void
 
   try {
     const decoded = await admin.auth().verifyIdToken(token);
-    console.log("✅ Token decoded:", decoded);
     const uid = decoded.uid;
 
     const user = await handleLogin(uid);
-    console.log("✅ Firestore user:", user);
 
     res.status(200).json({ user });
   } catch (err: any) {

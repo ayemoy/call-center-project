@@ -3,7 +3,7 @@ import { db } from "../firebase";
 import { collection, getDocs, setDoc, doc } from "firebase/firestore";
 import "../css/TagsManagement.css";
 import Select from "react-select";
-
+import { fetchTags, createTag } from "../services/tagsService";
 
 interface Props {
   onClose: () => void;
@@ -14,14 +14,18 @@ const TagsManagement: React.FC<Props> = ({ onClose }) => {
   const [tags, setTags] = useState<string[]>([]);
   const [message, setMessage] = useState("");
 
-  const fetchTags = async () => {
-    const snapshot = await getDocs(collection(db, "tags"));
-    const result = snapshot.docs.map(doc => doc.data().name);
-    setTags(result);
+  const loadTags = async () => {
+    try {
+      const result = await fetchTags();
+      setTags(result);
+    } catch (err) {
+      console.error("Failed to fetch tags", err);
+      setMessage("Failed to load tags");
+    }
   };
 
   useEffect(() => {
-    fetchTags();
+    loadTags();
   }, []);
 
   const handleCreate = async () => {
@@ -34,13 +38,13 @@ const TagsManagement: React.FC<Props> = ({ onClose }) => {
     }
 
     try {
-      await setDoc(doc(db, "tags", cleanName), { name: tagName.trim() });
-      setMessage("Tag created!");
+      const response = await createTag(tagName.trim());
+      setMessage(response.message);
       setTagName("");
-      fetchTags(); // reload tags
-    } catch (err) {
+      loadTags();
+    } catch (err: any) {
       console.error(err);
-      setMessage("Error creating tag.");
+      setMessage("Error creating tag");
     }
   };
 
