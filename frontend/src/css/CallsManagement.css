@@ -124,6 +124,7 @@
   transform: scale(1.05);
 }
 
+
 .task-card {
   display: flex;
   justify-content: space-between;
