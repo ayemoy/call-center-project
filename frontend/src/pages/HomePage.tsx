@@ -3,12 +3,18 @@ import "../css/HomePage.css";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import TagsManagement from "../components/TagsManagement";
+import CallsManagement  from "../components/CallsManagement";
 import NavBar from "../components/NavBar"; // 
 
 const HomePage: React.FC = () => {
   const { user, loading, logout } = useAuth();
   const navigate = useNavigate();
+
+
   const [showTagsModal, setShowTagsModal] = useState(false);
+  const [showCallsModal, setShowCallsModal] = useState(false);
+
+
   // Redirect to login if not authenticated
   useEffect(() => {
     if (!loading && !user) {
@@ -32,7 +38,7 @@ const HomePage: React.FC = () => {
         <section className="homepage-card">
           <h2>Open Calls</h2>
           <p>View and manage real-time incoming calls</p>
-          <button onClick={() => navigate("/calls")}>Manage Calls</button>
+          <button onClick={() => setShowCallsModal(true)}>Manage Calls</button>
         </section>
 
         {user?.role === "admin" && (
@@ -53,6 +59,8 @@ const HomePage: React.FC = () => {
       </main>
 
       {showTagsModal && <TagsManagement onClose={() => setShowTagsModal(false)} />}
+      {showCallsModal && <CallsManagement onClose={() => setShowCallsModal(false)} />}
+
     </div>
   );
 };
