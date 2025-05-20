@@ -71,6 +71,7 @@ const TagsManagement: React.FC<Props> = ({ onClose }) => {
               {/* <button className="remove-btn" onClick={() => handleDelete(tag)}>
                 ×
               </button> */}
+              
             </span>
           ))}
         </div>
