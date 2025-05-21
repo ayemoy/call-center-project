@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchCalls, updateCallTags } from "../services/callsService";
+import { fetchCalls, updateCallTags , updateTaskStatus} from "../services/callsService";
 import { fetchTags } from "../services/tagsService";
 import "../css/CallsManagement.css";
 import NewCallModal from "./NewCallModal";
@@ -128,6 +128,18 @@ const CallsManagement: React.FC<Props> = ({ onClose }) => {
     console.error("Failed to add tag", error);
   }
 };
+
+
+const handleStatusChange = async (taskId: string, newStatus: CallStatus) => {
+    if (!selectedCall) return;
+    const updatedTasks = selectedCall.tasks.map(task =>
+      task.id === taskId ? { ...task, status: newStatus } : task
+    );
+    const updatedCall = { ...selectedCall, tasks: updatedTasks };
+    setSelectedCall(updatedCall);
+    setCalls(calls.map(c => c.id === updatedCall.id ? updatedCall : c));
+    await updateTaskStatus(selectedCall.id, taskId, newStatus);
+  };
 
 
 
@@ -259,19 +271,23 @@ const CallsManagement: React.FC<Props> = ({ onClose }) => {
 
 
               <div className="tasks-list">
-                {selectedCall.tasks.map((task) => (
-                  <div key={task.id} className={`task-card ${getTaskColor(task.status)}`}>
-                    <span className="task-name">{task.name}</span>
-                    <select className="task-status" defaultValue={task.status}>
-                      <option value="New">New</option>
-                      <option value="In Progress">In Progress</option>
-                      <option value="Completed">Completed</option>
-                    </select>
-                  </div>
-                ))}
+                  {selectedCall.tasks.map(task => (
+                    <div key={task.id} className={`task-card ${getTaskColor(task.status)}`}>
+                      <span className="task-name">{task.name}</span>
+                      <select
+                        className="task-status"
+                        value={task.status}
+                        onChange={(e) => handleStatusChange(task.id, e.target.value as CallStatus)}
+                      >
+                        <option value="New">New</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                      </select>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          </>
+            </>
         ) : (
           <p>Select a call to view details</p>
         )}

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getCallsFromDB , createCallInDB, checkCallExists ,addTaskToCallInDB, updateCallTagsInDB } from '../calls/calls';
+import { getCallsFromDB , createCallInDB, checkCallExists ,addTaskToCallInDB, updateCallTagsInDB, updateTaskStatusInCall  } from '../calls/calls';
 
 export const getAllCalls = async (req: Request, res: Response) => {
   try {
@@ -63,5 +63,19 @@ export const updateCallTags = async (req: Request, res: Response) => {
     res.status(200).json({ message: "Tags updated" });
   } catch (err) {
     res.status(500).json({ message: "Failed to update tags" });
+  }
+};
+
+
+
+export const updateTaskStatus = async (req: Request, res: Response) => {
+  const { callId, taskId } = req.params;
+  const { status } = req.body;
+
+  try {
+    await updateTaskStatusInCall(callId, taskId, status);
+    res.status(200).json({ message: "Task status updated" });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to update task status" });
   }
 };

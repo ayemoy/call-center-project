@@ -24,3 +24,10 @@ export const updateCallTags = async (callId: string, tags: string[]) => {
   const res = await http.put(`/api/calls/${callId}/tags`, { tags });
   return res.data;
 };
+
+
+
+export const updateTaskStatus = async (callId: string, taskId: string, status: string) => {
+  const res = await http.put(`/api/calls/${callId}/tasks/${taskId}`, { status });
+  return res.data;
+};
