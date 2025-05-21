@@ -80,7 +80,7 @@ const TagsManagement: React.FC<Props> = ({ onClose }) => {
           ))}
         </div>
 
-        <button className="close-btn" onClick={onClose}>
+        <button className="close-btn-tags" onClick={onClose}>
           Close
         </button>
       </div>

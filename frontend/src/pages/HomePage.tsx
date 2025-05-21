@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import TagsManagement from "../components/TagsManagement";
 import CallsManagement  from "../components/CallsManagement";
-import NavBar from "../components/NavBar"; // 
+import SuggestedTasksModal from "../components/SuggestedTaskModal";
 
 const HomePage: React.FC = () => {
   const { user, loading, logout } = useAuth();
@@ -13,6 +13,7 @@ const HomePage: React.FC = () => {
 
   const [showTagsModal, setShowTagsModal] = useState(false);
   const [showCallsModal, setShowCallsModal] = useState(false);
+  const [showSuggestedModal, setShowSuggestedModal] = useState(false);
 
 
   // Redirect to login if not authenticated
@@ -52,7 +53,7 @@ const HomePage: React.FC = () => {
             <section className="homepage-card">
               <h2>Suggested Tasks</h2>
               <p>Define quick actions based on call tags</p>
-              <button onClick={() => navigate("/admin/tasks")}>View Tasks</button>
+              <button onClick={() => setShowSuggestedModal(true)}>View Tasks</button>
             </section>
           </>
         )}
@@ -60,6 +61,8 @@ const HomePage: React.FC = () => {
 
       {showTagsModal && <TagsManagement onClose={() => setShowTagsModal(false)} />}
       {showCallsModal && <CallsManagement onClose={() => setShowCallsModal(false)} />}
+        {showSuggestedModal && (<SuggestedTasksModal onClose={() => setShowSuggestedModal(false)} />)}
+
 
     </div>
   );

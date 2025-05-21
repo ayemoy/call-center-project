@@ -110,7 +110,7 @@
 }
 
 /* Close button */
-.close-btn {
+.close-btn-tags {
   margin: 25px auto 0;
   display: block;
   padding: 10px 24px;
@@ -123,7 +123,7 @@
   transition: background-color 0.3s ease;
 }
 
-.close-btn:hover {
+.close-btn-tags:hover {
   background-color: #333;
 }
 
