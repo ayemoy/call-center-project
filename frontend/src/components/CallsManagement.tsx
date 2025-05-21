@@ -5,6 +5,7 @@ import "../css/CallsManagement.css";
 import NewCallModal from "./NewCallModal";
 import NewTaskModal from "./NewTaskModal";
 import Select from "react-select";
+import { getSuggestedTasksByTags } from "../services/suggestedTasksService";
 
 interface Props {
   onClose: () => void;
@@ -36,6 +37,7 @@ const CallsManagement: React.FC<Props> = ({ onClose }) => {
   const [showNewCallModal, setShowNewCallModal] = useState(false);
   const [showNewTaskModal, setShowNewTaskModal] = useState(false);
 
+  const [suggestedTasks, setSuggestedTasks] = useState<{ id: string, name: string }[]>([]);
 
 
 
@@ -63,6 +65,25 @@ const CallsManagement: React.FC<Props> = ({ onClose }) => {
     };
     loadTags();
   }, []);
+
+
+  useEffect(() => {
+  const fetchSuggestions = async () => {
+    if (!selectedCall || selectedCall.tags.length === 0) {
+      setSuggestedTasks([]);
+      return;
+    }
+
+    try {
+      const tasks = await getSuggestedTasksByTags(selectedCall.tags);
+      setSuggestedTasks(tasks);
+    } catch (err) {
+      console.error("Failed to fetch suggested tasks");
+    }
+  };
+
+  fetchSuggestions();
+}, [selectedCall?.tags]);
 
 
   const capitalize = (str: string) =>
@@ -207,6 +228,36 @@ const CallsManagement: React.FC<Props> = ({ onClose }) => {
                   New Task
                 </button>
               </div>
+
+              {suggestedTasks.length > 0 && (
+                <div className="suggested-task-wrapper">
+                  <Select
+                    className="suggested-task-select"
+                    classNamePrefix="react-select"
+                    options={suggestedTasks.map(task => ({
+                      value: task.id,
+                      label: task.name
+                    }))}
+                    placeholder="Suggested Tasks"
+                    onChange={(option) => {
+                      if (!selectedCall || !option) return;
+
+                      const alreadyExists = selectedCall.tasks.some(t => t.id === option.value);
+                      if (alreadyExists) return;
+
+                      const newTask = {
+                        id: option.value,
+                        name: option.label,
+                        status: "New" as CallStatus,
+                      };
+
+                      handleCreateNewTask(newTask);
+                    }}
+                  />
+                </div>
+              )}
+
+
               <div className="tasks-list">
                 {selectedCall.tasks.map((task) => (
                   <div key={task.id} className={`task-card ${getTaskColor(task.status)}`}>
