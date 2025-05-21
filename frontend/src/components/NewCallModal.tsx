@@ -20,7 +20,7 @@ const NewCallModal: React.FC<Props> = ({ onClose, onCreate }) => {
         return;
       }
       const res = await createCall(trimmedName);
-      onCreate(res); // מחזיר את השיחה החדשה להורה
+      onCreate(res); 
       onClose();
     } catch (err: any) {
       setErrorMsg(err.response?.data?.message || "Failed to create call");

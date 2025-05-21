@@ -10,3 +10,17 @@ export const createCall = async (name: string) => {
   const res = await http.post("/api/calls", { name });
   return res.data.call;
 };
+
+
+
+export const createTask = async (callId: string, task: { id: string; name: string }) => {
+  const res = await http.post(`/api/calls/${callId}/tasks`, task);
+  return res.data.task;
+};
+
+
+
+export const updateCallTags = async (callId: string, tags: string[]) => {
+  const res = await http.put(`/api/calls/${callId}/tags`, { tags });
+  return res.data;
+};

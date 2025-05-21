@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getCallsFromDB , createCallInDB, checkCallExists } from '../calls/calls';
+import { getCallsFromDB , createCallInDB, checkCallExists ,addTaskToCallInDB, updateCallTagsInDB } from '../calls/calls';
 
 export const getAllCalls = async (req: Request, res: Response) => {
   try {
@@ -26,4 +26,42 @@ export const createNewCall = async (req: Request, res: Response) => {
 
   const newCall = await createCallInDB(name);
   res.status(201).json({ call: newCall });
+};
+
+
+
+export const addTaskToCall = async (req: Request, res: Response) => {
+  const { callId } = req.params;
+  const { id, name } = req.body;
+
+  if (!id || !name) {
+    return res.status(400).json({ message: "Task ID and name are required" });
+  }
+
+  try {
+    const task = await addTaskToCallInDB(callId, { id, name });
+    res.status(201).json({ task });
+  } catch (err: any) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to add task" });
+  }
+};
+
+
+
+
+export const updateCallTags = async (req: Request, res: Response) => {
+  const { callId } = req.params;
+  const { tags } = req.body;
+
+  if (!Array.isArray(tags)) {
+    return res.status(400).json({ message: "Tags must be an array" });
+  }
+
+  try {
+    await updateCallTagsInDB(callId, tags);
+    res.status(200).json({ message: "Tags updated" });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to update tags" });
+  }
 };
