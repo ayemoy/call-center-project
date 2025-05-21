@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchCalls } from "../services/callsService";
 import "../css/CallsManagement.css";
+import NewCallModal from "./NewCallModal";
 
 interface Props {
   onClose: () => void;
@@ -25,6 +26,7 @@ interface Call {
 const CallsManagement: React.FC<Props> = ({ onClose }) => {
   const [calls, setCalls] = useState<Call[]>([]);
   const [selectedCall, setSelectedCall] = useState<Call | null>(null);
+  const [showNewCallModal, setShowNewCallModal] = useState(false);
 
   useEffect(() => {
     const loadCalls = async () => {
@@ -53,7 +55,9 @@ const CallsManagement: React.FC<Props> = ({ onClose }) => {
         <div className="calls-left">
           <div className="calls-header">
             <h3>Calls</h3>
-            <button className="new-call-btn">New</button>
+            <button className="new-call-btn" onClick={() => setShowNewCallModal(true)}>
+              New Call
+            </button>
           </div>
           <div className="call-list">
             {calls.map((call) => (
@@ -86,7 +90,7 @@ const CallsManagement: React.FC<Props> = ({ onClose }) => {
               <div className="section">
                 <div className="tasks-header">
                   <label>Tasks:</label>
-                  <button className="new-task-btn">New</button>
+                  <button className="new-task-btn">New Task</button>
                 </div>
                 <div className="tasks-list">
                   {selectedCall.tasks.map((task) => (
@@ -111,6 +115,14 @@ const CallsManagement: React.FC<Props> = ({ onClose }) => {
           <button className="close-btn" onClick={onClose}>Close</button>
         </div>
       </div>
+
+      {showNewCallModal && (
+        <NewCallModal
+          onClose={() => setShowNewCallModal(false)}
+          onCreate={(newCall) => setCalls([...calls, newCall])}
+        />
+      )}
+
     </div>
   );
 };
