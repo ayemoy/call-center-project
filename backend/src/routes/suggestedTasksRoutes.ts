@@ -3,6 +3,6 @@ import { createSuggestedTask } from '../controllers/suggestedTasksController';
 
 const router = express.Router();
 
-router.post("/suggested-tasks/:id", createSuggestedTask);
+router.post("/suggestedTasks", createSuggestedTask);
 
 export default router;

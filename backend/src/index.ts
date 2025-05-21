@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import loginRoutes from './routes/loginRoutes';
 import tagsRoutes from './routes/tagsRoutes';
 import callsRoutes from './routes/callsRoutes';
+import suggestedTasksRoutes from './routes/suggestedTasksRoutes';
 
 
 dotenv.config();
@@ -23,6 +24,7 @@ app.get('/', (req, res) => {
 app.use('/api', loginRoutes);
 app.use('/api', tagsRoutes);
 app.use('/api', callsRoutes);
+app.use("/api", suggestedTasksRoutes);
 
 
 

@@ -1,5 +1,5 @@
 /* עיצוב שכבת הרקע של המודל */
-.inner-modal {
+.inner-modal-new-call {
   position: fixed;
   top: 0;
   left: 0;
@@ -13,7 +13,7 @@
 }
 
 /* קופסת המודל */
-.modal-content {
+.modal-content-new-call {
   background-color: white;
   padding: 30px;
   border-radius: 12px;
@@ -26,14 +26,14 @@
 }
 
 /* כותרת */
-.modal-content h3 {
+.modal-content-new-call h3 {
   margin-bottom: 20px;
   font-size: 22px;
   color: #333;
 }
 
 /* שדה טקסט */
-.modal-content input {
+.modal-content-new-call input {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -49,15 +49,15 @@
 }
 
 /* כפתורים */
-.modal-buttons {
+.modal-buttons-new-call{
   margin-top: 20px;
   display: flex;
   justify-content: space-between;
   gap: 10px;
 }
 
-.submit-btn,
-.cancel-btn {
+.submit-btn-new-call,
+.cancel-btn-new-call {
   flex: 1;
   padding: 10px;
   font-weight: bold;
@@ -69,23 +69,23 @@
 }
 
 /* כפתור אישור */
-.submit-btn {
+.submit-btn-new-call {
   background-color: #4caf50;
   color: white;
 }
 
-.submit-btn:hover {
+.submit-btn-new-call:hover {
   background-color: #388e3c;
   transform: scale(1.03);
 }
 
 /* כפתור ביטול */
-.cancel-btn {
+.cancel-btn-new-call {
   background-color: #f44336;
   color: white;
 }
 
-.cancel-btn:hover {
+.cancel-btn-new-call:hover {
   background-color: #d32f2f;
   transform: scale(1.03);
 }

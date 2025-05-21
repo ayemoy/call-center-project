@@ -1,4 +1,4 @@
-.modal-content {
+.modal-content-new-task {
   background: white;
   padding: 30px;
   border-radius: 12px;
@@ -10,7 +10,7 @@
   text-align: center;
 }
 
-.modal-content input {
+.modal-content-new-task input {
   margin-bottom: 12px;
   padding: 10px;
   font-size: 15px;
@@ -18,14 +18,14 @@
   border-radius: 8px;
 }
 
-.modal-buttons {
+.modal-buttons-new-task {
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
 }
 
-.submit-btn,
-.cancel-btn {
+.submit-btn-new-task,
+.cancel-btn-new-task {
   padding: 10px 20px;
   border: none;
   border-radius: 8px;
@@ -33,12 +33,12 @@
   cursor: pointer;
 }
 
-.submit-btn {
+.submit-btn-new-task {
   background-color: #4caf50;
   color: white;
 }
 
-.cancel-btn {
+.cancel-btn-new-task {
   background-color: #f44336;
   color: white;
 }

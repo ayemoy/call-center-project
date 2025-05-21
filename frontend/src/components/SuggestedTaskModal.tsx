@@ -35,6 +35,7 @@ const SuggestedTaskModal: React.FC<Props> = ({ onClose }) => {
   };
 
   const handleSubmit = async () => {
+    
     if (!taskId || !taskName) {
       setError("Task ID and name are required");
       return;
@@ -54,9 +55,9 @@ const SuggestedTaskModal: React.FC<Props> = ({ onClose }) => {
   const filteredTags = availableTags.filter(tag => !selectedTags.includes(tag));
 
   return (
-    <div className="modal-overlay">
-      <div className="modal">
-        <h2 className="modal-title">New Suggested Task</h2>
+    <div className="modal-overlay-suggested-task">
+      <div className="modal-suggested-task">
+        <h2 className="modal-title-suggested-task">New Suggested Task</h2>
 
         <input
           type="text"
@@ -71,15 +72,15 @@ const SuggestedTaskModal: React.FC<Props> = ({ onClose }) => {
           onChange={e => setTaskName(e.target.value)}
         />
 
-        <div className="dropdown-container">
-          <label className="section-label">Tags:</label>
-          <button className="add-tag-btn" onClick={() => setShowDropdown(!showDropdown)}>Add Tag</button>
+        <div className="dropdown-container-suggested-task">
+          <label className="section-label-suggested-task">Tags:</label>
+          <button className="add-tag-btn-suggested-task" onClick={() => setShowDropdown(!showDropdown)}>Add Tag</button>
           {showDropdown && (
-            <div className="dropdown">
+            <div className="dropdown-suggested-task">
               {filteredTags.map(tag => (
                 <div
                   key={tag}
-                  className="dropdown-item"
+                  className="dropdown-item-suggested-task"
                   onClick={() => handleAddTag(tag)}
                 >
                   {tag.charAt(0).toUpperCase() + tag.slice(1)}
@@ -89,11 +90,11 @@ const SuggestedTaskModal: React.FC<Props> = ({ onClose }) => {
           )}
         </div>
 
-        <div className="tags-container-tasks">
+        <div className="tags-container-tasks-suggested-task">
           <strong>Existing Tags:</strong>
-          <div className="tag-list">
+          <div className="tag-list-suggested-task">
             {selectedTags.map(tag => (
-              <span key={tag} className="tag-chip">
+              <span key={tag} className="tag-chip-suggested-task">
                 {tag.charAt(0).toUpperCase() + tag.slice(1)}
               </span>
             ))}
@@ -102,8 +103,8 @@ const SuggestedTaskModal: React.FC<Props> = ({ onClose }) => {
 
         {error && <p className="error">{error}</p>}
 
-        <div className="button-row">
-          <button className="save-btn" onClick={handleSubmit}>Save Task</button>
+        <div className="button-row-suggested-task">
+          <button className="save-btn-suggested-task" onClick={handleSubmit}>Save Task</button>
           <button className="close-btn-sug-task" onClick={onClose}>Cancel</button>
         </div>
       </div>

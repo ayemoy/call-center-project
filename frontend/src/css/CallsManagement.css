@@ -1,8 +1,8 @@
 .calls-modal {
   display: flex;
-  width: 90%;
+  width: 95%;
   height: 80%;
-  max-width: 1000px;
+  max-width: 1200px;
   background-color: white;
   border-radius: 10px;
   overflow: hidden;

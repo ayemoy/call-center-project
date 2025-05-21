@@ -38,7 +38,7 @@ const NewTaskModal: React.FC<Props> = ({ callId, existingTasks, onClose, onCreat
 
   return (
     <div className="modal-overlay inner-modal">
-      <div className="modal-content">
+      <div className="modal-content-new-task">
         <h3>New Task</h3>
         <input
           type="text"
@@ -53,9 +53,9 @@ const NewTaskModal: React.FC<Props> = ({ callId, existingTasks, onClose, onCreat
           onChange={(e) => setTaskName(e.target.value)}
         />
         {errorMsg && <p className="error-msg">{errorMsg}</p>}
-        <div className="modal-buttons">
-          <button className="submit-btn" onClick={handleAdd}>Add</button>
-          <button className="cancel-btn" onClick={onClose}>Cancel</button>
+        <div className="modal-buttons-new-task">
+          <button className="submit-btn-new-task" onClick={handleAdd}>Add</button>
+          <button className="cancel-btn-new-task" onClick={onClose}>Cancel</button>
         </div>
       </div>
     </div>

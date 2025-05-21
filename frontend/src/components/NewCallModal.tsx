@@ -28,8 +28,8 @@ const NewCallModal: React.FC<Props> = ({ onClose, onCreate }) => {
   };
 
   return (
-    <div className="modal-overlay inner-modal">
-      <div className="modal-content">
+    <div className="modal-overlay inner-modal-new-call">
+      <div className="modal-content-new-call">
         <h3>Create New Call</h3>
         <input
           type="text"
@@ -38,11 +38,11 @@ const NewCallModal: React.FC<Props> = ({ onClose, onCreate }) => {
           placeholder="Enter call name"
         />
         {errorMsg && <p className="error-msg">{errorMsg}</p>}
-        <div className="modal-buttons">
-          <button className="submit-btn" onClick={handleSubmit}>
+        <div className="modal-buttons-new-call">
+          <button className="submit-btn-new-call" onClick={handleSubmit}>
             Submit
           </button>
-          <button className="cancel-btn" onClick={onClose}>
+          <button className="cancel-btn-new-call" onClick={onClose}>
             Cancel
           </button>
         </div>
