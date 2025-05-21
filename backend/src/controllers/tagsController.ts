@@ -1,5 +1,5 @@
 import { Request, Response, RequestHandler } from 'express';
-import { getAllTags, addTagIfNotExists } from '../tags/tags';
+import { getAllTags, addTagIfNotExists, renameTagEverywhere, deleteTagEverywhere   } from '../tags/tags';
 
 export const getTagsController: RequestHandler = async (req, res) => {
   try {
@@ -26,3 +26,30 @@ export const createTagController: RequestHandler = async (req, res) => {
   }
 };
 
+
+
+
+export const renameTagController: RequestHandler = async (req, res) => {
+  const { oldName, newName } = req.body;
+
+  if (!oldName || !newName) return res.status(400).json({ message: "Missing fields" });
+
+  try {
+    await renameTagEverywhere(oldName, newName);
+    res.status(200).json({ message: "Tag renamed successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to rename tag" });
+  }
+};
+
+export const deleteTagController: RequestHandler = async (req, res) => {
+  const name = req.params.name;
+  if (!name) return res.status(400).json({ message: "Tag name required" });
+
+  try {
+    await deleteTagEverywhere(name);
+    res.status(200).json({ message: "Tag deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to delete tag" });
+  }
+};
