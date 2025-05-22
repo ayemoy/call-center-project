@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/call-center-project/static/css/main.cc32d2bd.css",
+    "main.js": "/call-center-project/static/js/main.b73a816f.js",
+    "static/js/453.8ab44547.chunk.js": "/call-center-project/static/js/453.8ab44547.chunk.js",
+    "static/media/back.png": "/call-center-project/static/media/back.8bd8543ef8a0aadc1fe0.png",
+    "static/media/logo.png": "/call-center-project/static/media/logo.59851c5aaaec38b58b2c.png",
+    "index.html": "/call-center-project/index.html",
+    "main.cc32d2bd.css.map": "/call-center-project/static/css/main.cc32d2bd.css.map",
+    "main.b73a816f.js.map": "/call-center-project/static/js/main.b73a816f.js.map",
+    "453.8ab44547.chunk.js.map": "/call-center-project/static/js/453.8ab44547.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.cc32d2bd.css",
+    "static/js/main.b73a816f.js"
+  ]
+}
