@@ -6,6 +6,8 @@ import NewCallModal from "./NewCallModal";
 import NewTaskModal from "./NewTaskModal";
 import Select from "react-select";
 import { getSuggestedTasksByTags } from "../services/suggestedTasksService";
+import socket from "../socket";
+
 
 interface Props {
   onClose: () => void;
@@ -38,6 +40,33 @@ const CallsManagement: React.FC<Props> = ({ onClose }) => {
   const [showNewTaskModal, setShowNewTaskModal] = useState(false);
 
   const [suggestedTasks, setSuggestedTasks] = useState<{ id: string, name: string }[]>([]);
+
+
+//useeffect for socket io
+  useEffect(() => {
+  socket.on("callsUpdated", (updatedCalls: Call[]) => {
+    setCalls(updatedCalls);
+    if (selectedCall) {
+      const updated = updatedCalls.find(c => c.id === selectedCall.id);
+      if (updated) setSelectedCall(updated);
+    }
+  });
+
+  return () => {
+    socket.off("callsUpdated");
+  };
+}, [selectedCall]);
+
+
+useEffect(() => {
+  socket.on("suggestedTasksUpdated", (updatedTasks: { id: string; name: string }[]) => {
+    setSuggestedTasks(updatedTasks);
+  });
+
+  return () => {
+    socket.off("suggestedTasksUpdated");
+  };
+}, []);
 
 
 
@@ -302,7 +331,6 @@ const handleStatusChange = async (taskId: string, newStatus: CallStatus) => {
     {showNewCallModal && (
       <NewCallModal
         onClose={() => setShowNewCallModal(false)}
-        onCreate={(newCall) => setCalls([...calls, newCall])}
       />
     )}
 
@@ -312,7 +340,6 @@ const handleStatusChange = async (taskId: string, newStatus: CallStatus) => {
         callId={selectedCall.id}
         existingTasks={selectedCall.tasks}
         onClose={handleCloseNewTaskModal}
-        onCreate={handleCreateNewTask}
       />
     )}
   </div>

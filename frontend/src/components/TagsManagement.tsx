@@ -4,6 +4,7 @@ import { collection, getDocs, setDoc, doc } from "firebase/firestore";
 import "../css/TagsManagement.css";
 import Select from "react-select";
 import { fetchTags, createTag , deleteTag, renameTag} from "../services/tagsService";
+import socket from ".././socket";
 
 interface Props {
   onClose: () => void;
@@ -31,8 +32,24 @@ const TagsManagement: React.FC<Props> = ({ onClose }) => {
 
   useEffect(() => {
     loadTags();
-    const interval = setInterval(loadTags, 5000); // Poll every 5 seconds
-    return () => clearInterval(interval);
+
+    socket.on("tagCreated", ({ name }) => {
+      setTags(prev => [...prev, name]);
+    });
+
+    socket.on("tagRenamed", ({ oldName, newName }) => {
+      setTags(prev => prev.map(tag => tag === oldName ? newName : tag));
+    });
+
+    socket.on("tagDeleted", ({ name }) => {
+      setTags(prev => prev.filter(tag => tag !== name));
+    });
+
+    return () => {
+      socket.off("tagCreated");
+      socket.off("tagRenamed");
+      socket.off("tagDeleted");
+    };
   }, []);
 
   const handleCreate = async () => {

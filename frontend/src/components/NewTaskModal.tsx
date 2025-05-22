@@ -6,10 +6,9 @@ interface Props {
   callId: string;
   existingTasks: { id: string }[];
   onClose: () => void;
-  onCreate: (task: any) => void;
 }
 
-const NewTaskModal: React.FC<Props> = ({ callId, existingTasks, onClose, onCreate }) => {
+const NewTaskModal: React.FC<Props> = ({ callId, existingTasks, onClose}) => {
   const [taskId, setTaskId] = useState("");
   const [taskName, setTaskName] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
@@ -29,7 +28,6 @@ const NewTaskModal: React.FC<Props> = ({ callId, existingTasks, onClose, onCreat
 
     try {
       const task = await createTask(callId, { id, name });
-      onCreate(task);
       onClose();
     } catch (err: any) {
       setErrorMsg(err.response?.data?.message || "Failed to add task");

@@ -5,12 +5,13 @@ import "../css/NewCallModal.css";
 
 interface Props {
   onClose: () => void;
-  onCreate: (newCall: any) => void;
 }
 
-const NewCallModal: React.FC<Props> = ({ onClose, onCreate }) => {
+const NewCallModal: React.FC<Props> = ({ onClose }) => {
   const [newCallName, setNewCallName] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+
+
 
   const handleSubmit = async () => {
     try {
@@ -19,9 +20,8 @@ const NewCallModal: React.FC<Props> = ({ onClose, onCreate }) => {
         setErrorMsg("Name is required");
         return;
       }
-      const res = await createCall(trimmedName);
-      onCreate(res); 
-      onClose();
+      await createCall(trimmedName); 
+      onClose(); 
     } catch (err: any) {
       setErrorMsg(err.response?.data?.message || "Failed to create call");
     }

@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { saveSuggestedTask, querySuggestedTasksByTags } from "../suggestedTasks/suggestedTasks";
+import { io } from "../index"; 
+
 
 export const createSuggestedTask = async (req: Request, res: Response) => {
   const { id, name, tags } = req.body;
@@ -10,6 +12,10 @@ export const createSuggestedTask = async (req: Request, res: Response) => {
 
   try {
     await saveSuggestedTask(id, { name, tags });
+
+    const allTasks = await querySuggestedTasksByTags([]); 
+    io.emit("suggestedTasksUpdated", allTasks);         
+
     res.status(201).json({ message: "Suggested task created successfully" });
   } catch (err) {
     res.status(500).json({ message: "Failed to save suggested task" });
