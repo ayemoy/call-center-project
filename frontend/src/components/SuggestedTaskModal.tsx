@@ -8,7 +8,6 @@ interface Props {
 }
 
 const SuggestedTaskModal: React.FC<Props> = ({ onClose }) => {
-  const [taskId, setTaskId] = useState("");
   const [taskName, setTaskName] = useState("");
   const [availableTags, setAvailableTags] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -68,19 +67,23 @@ const SuggestedTaskModal: React.FC<Props> = ({ onClose }) => {
 
   const handleSubmit = async () => {
     
-    if (!taskId || !taskName) {
-      setError("Task ID and name are required");
+    if (!taskName) {
+      setError("Task  name are required");
       return;
     }
     try {
-      await createSuggestedTask(taskId, {
+      await createSuggestedTask({
         name: taskName,
         tags: selectedTags.map(tag => tag.toLowerCase()),
       });
       onClose();
-    } catch (err) {
+    } catch (err: any) {
       console.error("Error creating suggested task", err);
-      setError("Task ID already exists or failed to save");
+      const message =
+        err?.response?.data?.message ||
+        err?.message ||
+        "Failed to save task";
+      setError(message);
     }
   };
 
@@ -94,14 +97,48 @@ const SuggestedTaskModal: React.FC<Props> = ({ onClose }) => {
   return (
     <div className="modal-overlay-suggested-task">
       <div className="modal-suggested-task">
-        <h2 className="modal-title-suggested-task">New Suggested Task</h2>
+        <h2 className="modal-title-suggested-task">Suggested Task</h2>
 
-        <input
-          type="text"
-          placeholder="Enter Task ID"
-          value={taskId}
-          onChange={e => setTaskId(e.target.value)}
-        />
+        <div>
+          <button
+            className="add-tag-btn-suggested-task manage-task-btn"
+            style={{ backgroundColor: "#2196f3" }}
+            onClick={() => setShowManagePanel(!showManagePanel)}
+          >
+            {showManagePanel ? "Hide Task Manager" : "Manage Suggested Tasks"}
+          </button>
+        </div>
+
+
+          {showManagePanel && (
+          <div className="task-manager">
+            <h4>Manage Existing Suggested Tasks</h4>
+            {allTasks.map(task => (
+              <div key={task.id} className="task-item">
+                <input
+                  type="text"
+                  value={task.name}
+                  onChange={(e) =>
+                    setAllTasks(prev =>
+                      prev.map(t =>
+                        t.id === task.id ? { ...t, name: e.target.value } : t
+                      )
+                    )
+                  }
+                />
+                <button onClick={() => updateSuggestedTaskName(task.id, task.name)}>
+                  Save
+                </button>
+                <button onClick={() => deleteSuggestedTaskById(task.id)}>
+                  Delete
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+      <h3 className="modal-subtitle-suggested-task">Create New Suggested Task</h3>
+
         <input
           type="text"
           placeholder="Enter Task Name"
@@ -111,13 +148,7 @@ const SuggestedTaskModal: React.FC<Props> = ({ onClose }) => {
 
         <div className="dropdown-container-suggested-task">
           <label className="section-label-suggested-task">Tags</label>
-          <button
-            className="add-tag-btn-suggested-task"
-            style={{ backgroundColor: "#2196f3" }}
-            onClick={() => setShowManagePanel(!showManagePanel)}
-          >
-            {showManagePanel ? "Hide Task Manager" : "Manage Suggested Tasks"}
-          </button>
+          
           <button className="add-tag-btn-suggested-task" onClick={() => setShowDropdown(!showDropdown)}>Add Tag</button>
           
           {showDropdown && (
@@ -154,34 +185,10 @@ const SuggestedTaskModal: React.FC<Props> = ({ onClose }) => {
         </div>
 
 
-        {showManagePanel && (
-          <div className="task-manager">
-            <h4>Manage Suggested Tasks</h4>
-            {allTasks.map(task => (
-              <div key={task.id} className="task-item">
-                <input
-                  type="text"
-                  value={task.name}
-                  onChange={(e) =>
-                    setAllTasks(prev =>
-                      prev.map(t =>
-                        t.id === task.id ? { ...t, name: e.target.value } : t
-                      )
-                    )
-                  }
-                />
-                <button onClick={() => updateSuggestedTaskName(task.id, task.name)}>
-                  Save
-                </button>
-                <button onClick={() => deleteSuggestedTaskById(task.id)}>
-                  Delete
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
+        
 
-        {error && <p className="error">{error}</p>}
+        {error && <p className="error" style={{ color: "red", marginTop: 10 }}>{error}</p>}
+
 
         <div className="button-row-suggested-task">
           <button className="save-btn-suggested-task" onClick={handleSubmit}>Save Task</button>

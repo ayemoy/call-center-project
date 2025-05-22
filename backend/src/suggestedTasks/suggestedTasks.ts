@@ -1,14 +1,29 @@
-import { doc, setDoc, collection, getDocs, deleteDoc, updateDoc} from "firebase/firestore";
+import { doc, setDoc, collection, getDocs, deleteDoc, updateDoc, addDoc} from "firebase/firestore";
 import { db } from "../firestore/firebaseConfig";
 
+
+
 export const saveSuggestedTask = async (
-  id: string,
   task: { name: string; tags: string[] }
-) => {
-  await setDoc(doc(db, "suggestedTasks", id), {
-    name: task.name,
+): Promise<string> => {
+  const normalizedName = task.name.trim().toLowerCase();
+
+  const snapshot = await getDocs(collection(db, "suggestedTasks"));
+  const alreadyExists = snapshot.docs.some(doc => {
+    const existingName = (doc.data().name || "").trim().toLowerCase();
+    return existingName === normalizedName;
+  });
+
+  if (alreadyExists) {
+    throw new Error("A task with this name already exists.");
+  }
+
+  const docRef = await addDoc(collection(db, "suggestedTasks"), {
+    name: task.name.trim(),
     tags: task.tags,
   });
+
+  return docRef.id;
 };
 
 

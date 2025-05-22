@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { getCallsFromDB , createCallInDB, checkCallExists ,addTaskToCallInDB, updateCallTagsInDB, updateTaskStatusInCall  } from '../calls/calls';
 import { io } from '../index';
-
+import { v4 as uuidv4 } from "uuid";
 
 export const getAllCalls = async (req: Request, res: Response) => {
   try {
@@ -33,12 +33,12 @@ export const createNewCall = async (req: Request, res: Response) => {
 
 export const addTaskToCall = async (req: Request, res: Response) => {
   const { callId } = req.params;
-  const { id, name } = req.body;
+  const { name } = req.body;
 
-  if (!id || !name) return res.status(400).json({ message: "Task ID and name are required" });
+  if (!name) return res.status(400).json({ message: "Task name is required" });
 
   try {
-    const task = await addTaskToCallInDB(callId, { id, name });
+    const task = await addTaskToCallInDB(callId, { name }); // אין id
     const allCalls = await getCallsFromDB();
     io.emit("callsUpdated", allCalls);
     res.status(201).json({ task });
@@ -47,6 +47,8 @@ export const addTaskToCall = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Failed to add task" });
   }
 };
+
+
 
 
 

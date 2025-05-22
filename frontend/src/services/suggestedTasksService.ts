@@ -1,10 +1,9 @@
 import http from "../http";
 
-export const createSuggestedTask = async (id: string, task: { name: string; tags: string[] }) => {
-  const res = await http.post("/api/suggestedTasks", {
-    id,
-    ...task,
-  });
+export const createSuggestedTask = async (
+  task: { name: string; tags: string[] }
+) => {
+  const res = await http.post("/api/suggestedTasks", task);
   return res.data;
 };
 

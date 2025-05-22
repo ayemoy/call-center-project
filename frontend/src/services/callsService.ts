@@ -13,10 +13,14 @@ export const createCall = async (name: string) => {
 
 
 
-export const createTask = async (callId: string, task: { id: string; name: string }) => {
+export const createTask = async (
+  callId: string,
+  task: { name: string }
+) => {
   const res = await http.post(`/api/calls/${callId}/tasks`, task);
   return res.data.task;
 };
+
 
 
 

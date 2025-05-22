@@ -4,14 +4,14 @@ import { io } from "../index";
 import { getCallsFromDB } from "../calls/calls";
 
 export const createSuggestedTask = async (req: Request, res: Response) => {
-  const { id, name, tags } = req.body;
+  const { name, tags } = req.body;
 
-  if (!id || !name) {
-    return res.status(400).json({ message: "Task ID and name are required" });
+  if ( !name) {
+    return res.status(400).json({ message: "Task name are required" });
   }
 
   try {
-    await saveSuggestedTask(id, { name, tags });
+    await saveSuggestedTask( { name, tags });
 
     const allTasks = await querySuggestedTasksByTags([]); 
     io.emit("suggestedTasksUpdated", allTasks);         

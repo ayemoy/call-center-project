@@ -35,7 +35,7 @@ export const createCallInDB = async (name: string) => {
 
 export const addTaskToCallInDB = async (
   callId: string,
-  task: { id: string; name: string }
+  task: { name: string }
 ) => {
   const callRef = doc(db, "calls", callId);
   const snap = await getDoc(callRef);
@@ -47,12 +47,11 @@ export const addTaskToCallInDB = async (
   const callData = snap.data();
   const existingTasks = callData.tasks || [];
 
-  if (existingTasks.some((t: any) => t.id === task.id)) {
-    throw new Error("Task already exists in this call");
+  if (existingTasks.some((t: any) => t.name.toLowerCase() === task.name.toLowerCase())) {
+    throw new Error("Task with this name already exists in this call");
   }
 
   const newTask = {
-    id: task.id,
     name: task.name,
     status: "New"
   };
@@ -62,6 +61,8 @@ export const addTaskToCallInDB = async (
 
   return newTask;
 };
+
+
 
 
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchCalls, updateCallTags , updateTaskStatus} from "../services/callsService";
+import { fetchCalls, updateCallTags , updateTaskStatus, createTask} from "../services/callsService";
 import { fetchTags } from "../services/tagsService";
 import "../css/CallsManagement.css";
 import NewCallModal from "./NewCallModal";
@@ -16,7 +16,6 @@ interface Props {
 type CallStatus = "New" | "In Progress" | "Completed";
 
 interface Task {
-  id: string;
   name: string;
   status: CallStatus;
 }
@@ -159,16 +158,20 @@ useEffect(() => {
 };
 
 
-const handleStatusChange = async (taskId: string, newStatus: CallStatus) => {
-    if (!selectedCall) return;
-    const updatedTasks = selectedCall.tasks.map(task =>
-      task.id === taskId ? { ...task, status: newStatus } : task
-    );
-    const updatedCall = { ...selectedCall, tasks: updatedTasks };
-    setSelectedCall(updatedCall);
-    setCalls(calls.map(c => c.id === updatedCall.id ? updatedCall : c));
-    await updateTaskStatus(selectedCall.id, taskId, newStatus);
-  };
+const handleStatusChange = async (taskName: string, newStatus: CallStatus) => {
+  if (!selectedCall) return;
+
+  const updatedTasks = selectedCall.tasks.map(task =>
+    task.name === taskName ? { ...task, status: newStatus } : task
+  );
+
+  const updatedCall = { ...selectedCall, tasks: updatedTasks };
+  setSelectedCall(updatedCall);
+  setCalls(calls.map(c => c.id === updatedCall.id ? updatedCall : c));
+
+  await updateTaskStatus(selectedCall.id, taskName, newStatus); 
+};
+
 
 
 
@@ -185,21 +188,32 @@ const handleStatusChange = async (taskId: string, newStatus: CallStatus) => {
     setShowNewTaskModal(false);
   };
 
-  const handleCreateNewTask = (newTask: Task) => {
-    if (!selectedCall) return;
 
-    const updated = calls.map(call =>
-      call.id === selectedCall.id
-        ? { ...call, tasks: [...call.tasks, newTask] }
-        : call
-    );
 
-    setCalls(updated);
-    setSelectedCall({
-      ...selectedCall,
-      tasks: [...selectedCall.tasks, newTask],
-    });
-  };
+  const handleCreateNewTask = async (task: { name?: string }) => {
+  if (!selectedCall || !task.name) return;
+
+  const newName = task.name.trim().toLowerCase();
+
+  const alreadyExistsInCall = selectedCall.tasks.some(
+    t => t.name.trim().toLowerCase() === newName
+  );
+
+  if (alreadyExistsInCall) {
+    
+    alert("Task with this name already exists in this call.");
+    return;
+  }
+
+  try {
+    await createTask(selectedCall.id, { name: task.name });
+  } catch (err) {
+    console.error("Failed to create task", err);
+  }
+};
+
+
+
 
   return (
   <div className="modal-overlay">
@@ -283,17 +297,22 @@ const handleStatusChange = async (taskId: string, newStatus: CallStatus) => {
                     onChange={(option) => {
                       if (!selectedCall || !option) return;
 
-                      const alreadyExists = selectedCall.tasks.some(t => t.id === option.value);
-                      if (alreadyExists) return;
+                      const alreadyExists = selectedCall.tasks.some(
+                        t => t.name.trim().toLowerCase() === option.label.trim().toLowerCase()
+                      );
+
+                      if (alreadyExists) {
+                        alert("Task with this name already exists in this call.");
+                        return;
+                      }
 
                       const newTask = {
-                        id: option.value,
                         name: option.label,
-                        status: "New" as CallStatus,
                       };
 
                       handleCreateNewTask(newTask);
                     }}
+
                   />
                 </div>
               )}
@@ -301,12 +320,14 @@ const handleStatusChange = async (taskId: string, newStatus: CallStatus) => {
 
               <div className="tasks-list">
                   {selectedCall.tasks.map(task => (
-                    <div key={task.id} className={`task-card ${getTaskColor(task.status)}`}>
+                    <div key={task.name} className={`task-card ${getTaskColor(task.status)}`}>
                       <span className="task-name">{task.name}</span>
                       <select
                         className="task-status"
                         value={task.status}
-                        onChange={(e) => handleStatusChange(task.id, e.target.value as CallStatus)}
+                        onChange={(e) =>
+                          handleStatusChange(task.name, e.target.value as CallStatus) 
+                        }
                       >
                         <option value="New">New</option>
                         <option value="In Progress">In Progress</option>
