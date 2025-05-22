@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getCallsFromDB , createCallInDB, checkCallExists ,addTaskToCallInDB, updateCallTagsInDB, updateTaskStatusInCall  } from '../calls/calls';
+import { getCallsFromDB , createCallInDB, checkCallExists ,addTaskToCallInDB, updateCallTagsInDB, updateTaskStatusInCall ,deleteTaskFromCallInDB  } from '../calls/calls';
 import { io } from '../index';
 import { v4 as uuidv4 } from "uuid";
 
@@ -38,7 +38,7 @@ export const addTaskToCall = async (req: Request, res: Response) => {
   if (!name) return res.status(400).json({ message: "Task name is required" });
 
   try {
-    const task = await addTaskToCallInDB(callId, { name }); // אין id
+    const task = await addTaskToCallInDB(callId, { name });
     const allCalls = await getCallsFromDB();
     io.emit("callsUpdated", allCalls);
     res.status(201).json({ task });
@@ -83,5 +83,22 @@ export const updateTaskStatus = async (req: Request, res: Response) => {
     res.status(200).json({ message: "Task status updated" });
   } catch (err) {
     res.status(500).json({ message: "Failed to update task status" });
+  }
+};
+
+
+
+
+export const deleteTaskFromCall = async (req: Request, res: Response) => {
+  const { callId, taskName } = req.params;
+
+  try {
+    await deleteTaskFromCallInDB(callId, taskName);
+    const allCalls = await getCallsFromDB();
+    io.emit("callsUpdated", allCalls);
+    res.status(200).json({ message: "Task deleted" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to delete task" });
   }
 };

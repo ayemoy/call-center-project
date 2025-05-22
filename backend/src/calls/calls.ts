@@ -86,3 +86,21 @@ export const updateTaskStatusInCall = async (callId: string, taskId: string, sta
 
   await updateDoc(callRef, { tasks: updatedTasks });
 };
+
+
+
+export const deleteTaskFromCallInDB = async (callId: string, taskName: string) => {
+  const callRef = doc(db, "calls", callId);
+  const callSnap = await getDoc(callRef);
+
+  if (!callSnap.exists()) {
+    throw new Error("Call not found");
+  }
+
+  const callData = callSnap.data();
+  const updatedTasks = (callData.tasks || []).filter(
+    (task: any) => task.name.toLowerCase() !== taskName.toLowerCase()
+  );
+
+  await updateDoc(callRef, { tasks: updatedTasks });
+};

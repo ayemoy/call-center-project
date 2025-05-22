@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchCalls, updateCallTags , updateTaskStatus, createTask} from "../services/callsService";
+import { fetchCalls, updateCallTags , updateTaskStatus, createTask, deleteTask } from "../services/callsService";
 import { fetchTags } from "../services/tagsService";
 import "../css/CallsManagement.css";
 import NewCallModal from "./NewCallModal";
@@ -7,6 +7,8 @@ import NewTaskModal from "./NewTaskModal";
 import Select from "react-select";
 import { getSuggestedTasksByTags } from "../services/suggestedTasksService";
 import socket from "../socket";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan  } from "@fortawesome/free-solid-svg-icons";
 
 
 interface Props {
@@ -39,6 +41,9 @@ const CallsManagement: React.FC<Props> = ({ onClose }) => {
   const [showNewTaskModal, setShowNewTaskModal] = useState(false);
 
   const [suggestedTasks, setSuggestedTasks] = useState<{ id: string, name: string }[]>([]);
+
+  const [message, setMessage] = useState("");
+
 
 
 //useeffect for socket io
@@ -190,7 +195,7 @@ const handleStatusChange = async (taskName: string, newStatus: CallStatus) => {
 
 
 
-  const handleCreateNewTask = async (task: { name?: string }) => {
+const handleCreateNewTask = async (task: { name?: string }) => {
   if (!selectedCall || !task.name) return;
 
   const newName = task.name.trim().toLowerCase();
@@ -200,15 +205,30 @@ const handleStatusChange = async (taskName: string, newStatus: CallStatus) => {
   );
 
   if (alreadyExistsInCall) {
-    
-    alert("Task with this name already exists in this call.");
+    setMessage("Task with this name already exists in this call.");
     return;
   }
 
   try {
     await createTask(selectedCall.id, { name: task.name });
+    setMessage(""); 
   } catch (err) {
     console.error("Failed to create task", err);
+    setMessage("Failed to create task");
+  }
+};
+
+
+
+const handleDeleteTask = async (taskName: string) => {
+  if (!selectedCall) return;
+
+  try {
+    await deleteTask(selectedCall.id, taskName);
+    setMessage(""); 
+  } catch (err) {
+    console.error("Failed to delete task", err);
+    setMessage("Failed to delete task.");
   }
 };
 
@@ -222,7 +242,7 @@ const handleStatusChange = async (taskName: string, newStatus: CallStatus) => {
         <div className="calls-header">
           <h3>Calls</h3>
           <button className="new-call-btn" onClick={() => setShowNewCallModal(true)}>
-            New Call
+            Add New Call
           </button>
         </div>
         <div className="call-list">
@@ -276,16 +296,19 @@ const handleStatusChange = async (taskName: string, newStatus: CallStatus) => {
             <div className="section">
               <div className="tasks-header">
                 <label>Tasks:</label>
+                {message && <p className="error-msg">{message}</p>}
                 <button
                   className="new-task-btn"
                   onClick={() => setShowNewTaskModal(true)}
                 >
-                  New Task
+                  Add New Task
                 </button>
               </div>
 
               {suggestedTasks.length > 0 && (
                 <div className="suggested-task-wrapper">
+                  
+
                   <Select
                     className="suggested-task-select"
                     classNamePrefix="react-select"
@@ -302,7 +325,7 @@ const handleStatusChange = async (taskName: string, newStatus: CallStatus) => {
                       );
 
                       if (alreadyExists) {
-                        alert("Task with this name already exists in this call.");
+                        setMessage("Task with this name already exists in this call.");
                         return;
                       }
 
@@ -315,6 +338,7 @@ const handleStatusChange = async (taskName: string, newStatus: CallStatus) => {
 
                   />
                 </div>
+
               )}
 
 
@@ -333,6 +357,13 @@ const handleStatusChange = async (taskName: string, newStatus: CallStatus) => {
                         <option value="In Progress">In Progress</option>
                         <option value="Completed">Completed</option>
                       </select>
+
+                      <button
+                        className="delete-task-btn"
+                        onClick={() => handleDeleteTask(task.name)}
+                      >
+                        <FontAwesomeIcon icon={faTrashCan} />
+                      </button>
                     </div>
                   ))}
                 </div>

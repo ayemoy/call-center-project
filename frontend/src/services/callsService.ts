@@ -35,3 +35,10 @@ export const updateTaskStatus = async (callId: string, taskId: string, status: s
   const res = await http.put(`/api/calls/${callId}/tasks/${taskId}`, { status });
   return res.data;
 };
+
+
+
+export const deleteTask = async (callId: string, taskName: string) => {
+  const res = await http.delete(`/api/calls/${callId}/tasks/${taskName}`);
+  return res.data;
+};
