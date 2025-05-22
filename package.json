@@ -1,0 +1,12 @@
+{
+  "name": "call-center-project",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "install-all": "cd backend && npm install && cd ../frontend && npm install",
+    "start": "concurrently \"npm run dev --prefix backend\" \"npm start --prefix frontend\""
+  },
+  "dependencies": {
+    "concurrently": "^8.0.0"
+  }
+}
