@@ -8,7 +8,7 @@ import Select from "react-select";
 import { getSuggestedTasksByTags } from "../services/suggestedTasksService";
 import socket from "../socket";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashCan  } from "@fortawesome/free-solid-svg-icons";
+import { faTrashCan, faPhone   } from "@fortawesome/free-solid-svg-icons";
 
 
 interface Props {
@@ -166,6 +166,15 @@ useEffect(() => {
 const handleStatusChange = async (taskName: string, newStatus: CallStatus) => {
   if (!selectedCall) return;
 
+  const task = selectedCall.tasks.find(t => t.name === taskName);
+  if (!task) return;
+
+  const confirmChange = window.confirm(
+    `Are you sure you want to change the status of "${taskName}" from "${task.status}" to "${newStatus}"?`
+  );
+
+  if (!confirmChange) return;
+
   const updatedTasks = selectedCall.tasks.map(task =>
     task.name === taskName ? { ...task, status: newStatus } : task
   );
@@ -174,8 +183,9 @@ const handleStatusChange = async (taskName: string, newStatus: CallStatus) => {
   setSelectedCall(updatedCall);
   setCalls(calls.map(c => c.id === updatedCall.id ? updatedCall : c));
 
-  await updateTaskStatus(selectedCall.id, taskName, newStatus); 
+  await updateTaskStatus(selectedCall.id, taskName, newStatus);
 };
+
 
 
 
@@ -223,6 +233,9 @@ const handleCreateNewTask = async (task: { name?: string }) => {
 const handleDeleteTask = async (taskName: string) => {
   if (!selectedCall) return;
 
+  const confirmDelete = window.confirm(`Are you sure you want to delete the task "${taskName}"?`);
+  if (!confirmDelete) return;
+
   try {
     await deleteTask(selectedCall.id, taskName);
     setMessage(""); 
@@ -231,6 +244,34 @@ const handleDeleteTask = async (taskName: string) => {
     setMessage("Failed to delete task.");
   }
 };
+
+
+const handleDeleteTag = async (tagToDelete: string) => {
+  if (!selectedCall) return;
+
+  const confirmDelete = window.confirm(`Are you sure you want to delete the tag "${tagToDelete}"?`);
+  if (!confirmDelete) return;
+
+
+  const updatedTags = selectedCall.tags.filter(tag => tag !== tagToDelete);
+
+  try {
+    await updateCallTags(selectedCall.id, updatedTags);
+
+    const updatedCall = { ...selectedCall, tags: updatedTags };
+    setSelectedCall(updatedCall);
+    setCalls(calls.map(c => c.id === selectedCall.id ? updatedCall : c));
+
+    const tasks = await getSuggestedTasksByTags(updatedTags);
+    setSuggestedTasks(tasks);
+
+    setMessage("");
+  } catch (err) {
+    console.error("Failed to delete tag", err);
+    setMessage("Failed to delete tag.");
+  }
+};
+
 
 
 
@@ -249,10 +290,11 @@ const handleDeleteTask = async (taskName: string) => {
           {calls.map((call) => (
             <button
               key={call.id}
-              className="call-btn"
+              className={`call-btn ${selectedCall?.id === call.id ? 'selected' : ''}`}
               onClick={() => setSelectedCall(call)}
             >
-              {call.name}
+              <FontAwesomeIcon icon={faPhone} className="call-icon" />
+              <span className="call-name">{call.name}</span>
             </button>
           ))}
         </div>
@@ -267,7 +309,10 @@ const handleDeleteTask = async (taskName: string) => {
               <label>Tags:</label>
               <div className="tags-list">
                 {selectedCall.tags.map((tag) => (
-                  <span key={tag} className="tag-chip">{tag}</span>
+                  <div key={tag} className="tag-chip-with-delete">
+                    <span className="tag-chip">{tag}</span>
+                    <button className="tag-delete-btn" onClick={() => handleDeleteTag(tag)}>×</button>
+                  </div>
                 ))}
                 <div className="dropdown-container">
                   <button className="icon-btn" onClick={() => setShowTagDropdown(!showTagDropdown)}>+</button>

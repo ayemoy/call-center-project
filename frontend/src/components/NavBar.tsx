@@ -4,6 +4,11 @@ import { signOut } from "firebase/auth";
 import { auth } from "../firebase"; // Adjust path as needed
 import { useAuth } from "../context/AuthContext"; // useAuth instead of useContext
 import "../css/NavBar.css";
+import logo from "../pictures/logo.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons"; 
+
+
 
 const NavBar: React.FC = () => {
     const navigate = useNavigate();
@@ -19,29 +24,36 @@ const NavBar: React.FC = () => {
     if (loading) return null;
 
     return (
-        <nav className="navbar">
-        <div className="navbar-logo">📞 Tel Aviv Call Center</div>
+    <nav className="navbar">
+      <div className="navbar-left">
+        <img src={logo} alt="Logo" className="navbar-logo-img" />
+        <span className="navbar-title">Tel Aviv Call Center</span>
+      </div>
 
-        {user && (
-            <div className="navbar-user-section">
-            <div
-                className="navbar-welcome"
-                onClick={() => setMenuOpen(!isMenuOpen)}
+      {user && (
+        <div className="navbar-user-section">
+          <div
+            className="navbar-welcome"
+            onClick={() => setMenuOpen(!isMenuOpen)}
             >
-                Welcome, {user.displayName || user.email?.split("@")[0]}
+             {user.displayName || user.email?.split("@")[0]}
+            <FontAwesomeIcon
+                icon={faChevronDown}
+                className={`navbar-chevron ${isMenuOpen ? "rotate" : ""}`}
+            />
             </div>
 
-            {isMenuOpen && (
-                <div className="navbar-menu">
-                <div onClick={handleLogout} className="navbar-menu-item">
-                    Logout
-                </div>
-                </div>
-            )}
+          {isMenuOpen && (
+            <div className="navbar-menu">
+              <div onClick={handleLogout} className="navbar-menu-item">
+                Logout
+              </div>
             </div>
-        )}
-        </nav>
-    );
+          )}
+        </div>
+      )}
+    </nav>
+  );
 };
 
 export default NavBar;

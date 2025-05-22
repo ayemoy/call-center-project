@@ -73,19 +73,21 @@ export const updateCallTagsInDB = async (callId: string, tags: string[]) => {
 };
 
 
-export const updateTaskStatusInCall = async (callId: string, taskId: string, status: string) => {
+export const updateTaskStatusInCall = async (callId: string, taskName: string, status: string) => {
   const callRef = doc(db, "calls", callId);
   const callSnap = await getDoc(callRef);
 
   if (!callSnap.exists()) throw new Error("Call not found");
 
   const callData = callSnap.data();
+
   const updatedTasks = callData.tasks.map((task: any) =>
-    task.id === taskId ? { ...task, status } : task
+    task.name === taskName ? { ...task, status } : task
   );
 
   await updateDoc(callRef, { tasks: updatedTasks });
 };
+
 
 
 

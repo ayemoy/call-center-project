@@ -71,13 +71,12 @@ export const updateCallTags = async (req: Request, res: Response) => {
 
 
 
-
 export const updateTaskStatus = async (req: Request, res: Response) => {
-  const { callId, taskId } = req.params;
+  const { callId, taskId } = req.params; 
   const { status } = req.body;
 
   try {
-    await updateTaskStatusInCall(callId, taskId, status);
+    await updateTaskStatusInCall(callId, taskId, status); 
     const allCalls = await getCallsFromDB();
     io.emit("callsUpdated", allCalls);
     res.status(200).json({ message: "Task status updated" });
@@ -85,6 +84,7 @@ export const updateTaskStatus = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Failed to update task status" });
   }
 };
+
 
 
 

@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import TagsManagement from "../components/TagsManagement";
 import CallsManagement  from "../components/CallsManagement";
 import SuggestedTasksModal from "../components/SuggestedTaskModal";
+import backgroundImg from "../pictures/back.png";
+
 
 const HomePage: React.FC = () => {
   const { user, loading, logout } = useAuth();
@@ -29,8 +31,12 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="homepage-container">
+      <div
+        className="background-overlay"
+        style={{ backgroundImage: `url(${backgroundImg})` }}
+      />
       <header className="homepage-header">
-        <h1>📞 Tel Aviv Municipality Call Center</h1>
+        <h1>Tel Aviv Municipality Call Center</h1>
         <p>Internal system for managing emergency calls and tasks</p>
         <h3>Welcome, {user?.displayName || user?.email}</h3>
       </header>
