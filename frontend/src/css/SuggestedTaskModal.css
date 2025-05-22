@@ -98,11 +98,11 @@ input {
   margin-top: 20px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* מיושרות לשמאל */
+  align-items: flex-start;
 }
 
 .tags-container-tasks-suggested-task strong {
-  margin-bottom: 5px; /* ריווח בין הכותרת לצ'יפים */
+  margin-bottom: 5px;
   font-weight: bold;
   font-size: 16px;
 }
@@ -245,4 +245,11 @@ input {
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 12px;
+}
+
+
+.close-btn-sug-task:hover {
+  background-color: #d32f2f;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }

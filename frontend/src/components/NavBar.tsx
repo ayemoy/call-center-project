@@ -26,7 +26,14 @@ const NavBar: React.FC = () => {
     return (
     <nav className="navbar">
       <div className="navbar-left">
-        <img src={logo} alt="Logo" className="navbar-logo-img" />
+        <img
+          src={logo}
+          alt="Logo"
+          className="navbar-logo-img"
+          onClick={() => navigate("/")}
+          style={{ cursor: "pointer" }}
+        />
+
         <span className="navbar-title">Tel Aviv Call Center</span>
       </div>
 

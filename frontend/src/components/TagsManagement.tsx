@@ -75,6 +75,8 @@ const TagsManagement: React.FC<Props> = ({ onClose }) => {
 
 
   const handleDelete = async (tag: string) => {
+    const confirmDelete = window.confirm(`Are you sure you want to delete the tag "${tag}"?`);
+    if (!confirmDelete) return;
     try {
       await deleteTag(tag);
       setMessage("Tag deleted");
@@ -87,6 +89,10 @@ const TagsManagement: React.FC<Props> = ({ onClose }) => {
 
   const handleEdit = async () => {
     if (!editingTag || !newName.trim()) return;
+
+    const confirmRename = window.confirm(
+    `Are you sure you want to rename "${editingTag}" to "${newName}"?`);
+    if (!confirmRename) return;
 
     try {
       await renameTag(editingTag, newName.trim());
