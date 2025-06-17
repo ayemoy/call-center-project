@@ -6,9 +6,9 @@
 ![Firestore](https://img.shields.io/badge/database-Firestore-orange?logo=firebase)
 ![Deployed](https://img.shields.io/badge/status-Deployed-brightgreen)
 
-> A full stack web application for managing calls, tasks, and team collaboration inside a call center — built as a self-learning project.
+> A full stack web application for managing calls, tasks, and team collaboration inside a call center- built as a self-learning project.
 
- **First time using TypeScript — learned and applied it independently!**
+ **First time using TypeScript-learned and applied it independently!**
 
 ---
 
@@ -81,7 +81,7 @@
 ##  About Me
 
 I'm a passionate developer who loves learning by building.  
-This was my **first TypeScript project**, and I challenged myself to create something practical, real-time, and user-friendly — entirely on my own.
+This was my **first TypeScript project**, and I challenged myself to create something practical, real-time, and user-friendly entirely on my own.
 
 ---
 
