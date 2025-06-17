@@ -14,8 +14,7 @@
 
 ##  Live Demo
 
-🔗 [Live Site](https://call-center-project-frontend.onrender.com)  
-📁 [GitHub Repository](https://github.com/ayemoy/call-center-project)
+ [Live Site](https://call-center-project-frontend.onrender.com)  
 
 ---
 
@@ -23,8 +22,8 @@
 
 | Role           | Email              | Password  |
 |----------------|--------------------|-----------|
-| 🛠 Admin       | `yoav@gmail.com`    | `123456`  |
-| 👤 Regular User | `avi@gmail.com`     | `1234567` |
+|  Admin       | `yoav@gmail.com`    | `123456`  |
+|  Regular User | `avi@gmail.com`     | `1234567` |
 
 ---
 
