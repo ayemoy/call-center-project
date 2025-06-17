@@ -1,78 +1,90 @@
+# 📞 Call Center Management Platform
 
-About the Project
-This is a full stack application I built as part of a personal self-learning initiative, focused on mastering modern web development practices. The platform helps call center teams handle incoming calls more efficiently by enabling admins to manage tags and tasks, while users assign and update tasks for specific calls.
+![TypeScript](https://img.shields.io/badge/code-TypeScript-blue?logo=typescript)
+![React](https://img.shields.io/badge/frontend-React-%2361DAFB?logo=react)
+![Node.js](https://img.shields.io/badge/backend-Node.js-green?logo=node.js)
+![Firestore](https://img.shields.io/badge/database-Firestore-orange?logo=firebase)
+![Deployed](https://img.shields.io/badge/status-Deployed-brightgreen)
 
-It was also my first time working with TypeScript, and I took the opportunity to teach myself the language while building a complete system from scratch.
+> A full stack web application for managing calls, tasks, and team collaboration inside a call center — built as a self-learning project.
 
-Technologies Used
-Frontend
-React (with TypeScript – self-learned for this project)
+🎯 **First time using TypeScript — learned and applied it independently!**
 
-MUI (Material UI) – for responsive, clean design
+---
 
-Socket.IO Client – for real-time sync between users
+## 🌍 Live Demo
 
-Axios – for API interactions
+🔗 [Live Site](https://call-center-project-frontend.onrender.com)  
+📁 [GitHub Repository](https://github.com/ayemoy/call-center-project)
 
-React Context API – for app-wide state sharing
+---
 
-Backend
-Node.js + Express.js
+## 🔐 Demo Login Credentials
 
-TypeScript
+| Role           | Email              | Password  |
+|----------------|--------------------|-----------|
+| 🛠 Admin       | `yoav@gmail.com`    | `123456`  |
+| 👤 Regular User | `avi@gmail.com`     | `1234567` |
 
-Socket.IO Server – for bi-directional communication
+---
 
-Firebase Firestore – used to store and manage all data, including calls, tasks, tags, and user roles
+## 🛠️ Tech Stack
 
-Firebase Admin SDK – for secure backend access to Firestore
+### 🔷 Frontend
+- React + **TypeScript**
+- Material UI (MUI)
+- React Context API
+- Axios
+- Socket.IO (Client)
 
-CORS, dotenv, cookie-parser – for secure API handling and config
+### 🟢 Backend
+- Node.js + Express
+- **TypeScript**
+- Socket.IO (Server)
+- Firebase Admin SDK
+- CORS, dotenv, cookie-parser
 
-Deployment
-Render – used to deploy the live frontend app
+### 🔸 Database
+- **Firestore** – used to store and manage **all app data** (calls, tasks, tags, users)
 
-Modular project structure with separation of concerns:
+### 🚀 Deployment
+- **Render** (Frontend)
+- Structured backend: `routes`, `controllers`, `services`, `data-access`
 
-routes, controllers, services, and data-access layers in the backend
+---
 
-Demo Login Credentials
-Admin Access
-Email: yoav@gmail.com
+## 📌 Features
 
-Password: 123456
+### 👑 Admin Area
+- Create & edit **Tags**
+- Create & assign **Suggested Tasks**
+- Automatic data propagation when tags/tasks are renamed
 
-Regular User Access
-Email: avi@gmail.com
+### 👥 User Area
+- Create & manage **Call Records**
+- Assign Tags & Tasks
+- View Suggested Tasks based on tags
+- Track Task Status: `Open`, `In Progress`, `Completed`
+- Real-time updates across users (via WebSocket)
 
-Password: 1234567
+---
 
-Core Features
-Admin Panel
-Create and edit Tags
+## 🎓 What I Learned
 
-Create Suggested Tasks and associate them with tags
+✅ Built real-time features with **Socket.IO**  
+✅ Developed frontend and backend using **TypeScript**  
+✅ Gained deep experience with **Firestore** as a scalable NoSQL DB  
+✅ Implemented clean architecture with separation of concerns  
+✅ Managed deployment and live version via **Render**
 
-System-wide updates: when a tag/task is renamed, all associated records update automatically
+---
 
-User Panel
-View, create, and manage Calls
+## 🙋‍♀️ About Me
 
-Assign tags and tasks to each call
+I'm a passionate developer who loves learning by building.  
+This was my **first TypeScript project**, and I challenged myself to create something practical, real-time, and user-friendly — entirely on my own.
 
-See task suggestions based on selected tags
+If you're looking for someone who's quick to learn, not afraid to dive deep, and excited to grow — feel free to reach out 😊
 
-Track task status: Open, In Progress, Completed
+---
 
-Live updates across users via WebSockets
-
-What I Learned
-Built a real-time collaborative system using Socket.IO
-
-Implemented a structured backend in TypeScript for the first time
-
-Designed a scalable frontend using React + TypeScript
-
-Gained hands-on experience with Firestore as a NoSQL cloud database
-
-Developed a full CI/CD flow including deployment
