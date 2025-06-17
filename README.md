@@ -1,46 +1,78 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+About the Project
+This is a full stack application I built as part of a personal self-learning initiative, focused on mastering modern web development practices. The platform helps call center teams handle incoming calls more efficiently by enabling admins to manage tags and tasks, while users assign and update tasks for specific calls.
 
-## Available Scripts
+It was also my first time working with TypeScript, and I took the opportunity to teach myself the language while building a complete system from scratch.
 
-In the project directory, you can run:
+Technologies Used
+Frontend
+React (with TypeScript – self-learned for this project)
 
-### `npm start`
+MUI (Material UI) – for responsive, clean design
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Socket.IO Client – for real-time sync between users
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Axios – for API interactions
 
-### `npm test`
+React Context API – for app-wide state sharing
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Backend
+Node.js + Express.js
 
-### `npm run build`
+TypeScript
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Socket.IO Server – for bi-directional communication
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Firebase Firestore – used to store and manage all data, including calls, tasks, tags, and user roles
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Firebase Admin SDK – for secure backend access to Firestore
 
-### `npm run eject`
+CORS, dotenv, cookie-parser – for secure API handling and config
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Deployment
+Render – used to deploy the live frontend app
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Modular project structure with separation of concerns:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+routes, controllers, services, and data-access layers in the backend
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Demo Login Credentials
+Admin Access
+Email: yoav@gmail.com
 
-## Learn More
+Password: 123456
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Regular User Access
+Email: avi@gmail.com
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Password: 1234567
+
+Core Features
+Admin Panel
+Create and edit Tags
+
+Create Suggested Tasks and associate them with tags
+
+System-wide updates: when a tag/task is renamed, all associated records update automatically
+
+User Panel
+View, create, and manage Calls
+
+Assign tags and tasks to each call
+
+See task suggestions based on selected tags
+
+Track task status: Open, In Progress, Completed
+
+Live updates across users via WebSockets
+
+What I Learned
+Built a real-time collaborative system using Socket.IO
+
+Implemented a structured backend in TypeScript for the first time
+
+Designed a scalable frontend using React + TypeScript
+
+Gained hands-on experience with Firestore as a NoSQL cloud database
+
+Developed a full CI/CD flow including deployment
